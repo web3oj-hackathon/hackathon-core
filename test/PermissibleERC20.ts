@@ -133,4 +133,27 @@ describe("PermissibleERC20", function () {
       );
     });
   });
+
+  describe("ERC2771Recipient", function () {
+    it("Set trustedForwarder", async function () {
+      const { permissibleERC20, owner } = await loadFixture(
+        deployPermissibleERC20Fixture
+      );
+
+      await permissibleERC20.setTrustedForwarder(owner.address);
+      expect(await permissibleERC20.getTrustedForwarder()).to.equal(
+        owner.address
+      );
+    });
+
+    it("Should not setTrustedForwarder - Non-owner", async function () {
+      const { permissibleERC20, account1 } = await loadFixture(
+        deployPermissibleERC20Fixture
+      );
+
+      await expect(
+        permissibleERC20.connect(account1).setTrustedForwarder(account1.address)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+  });
 });
