@@ -32,4 +32,8 @@ contract PermissibleERC20 is ERC20, Ownable, ERC20Permit, ERC2771Recipient {
             return msg.data;
         }
     }
+
+    function setTrustedForwarder(address _forwarder) public onlyOwner {
+        _setTrustedForwarder(_forwarder);
+    }
 }
