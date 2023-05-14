@@ -22,7 +22,7 @@ function getEIP712Message(
   gas: BigNumber,
   nonce: BigNumber
 ) {
-  const types = {
+  const types: MessageTypes = {
     EIP712Domain: [
       { name: "name", type: "string" },
       { name: "version", type: "string" },
@@ -53,11 +53,6 @@ function getEIP712Message(
     value: String("0x0"),
   };
 
-  const messageTypes: MessageTypes = {
-    EIP712Domain: types.EIP712Domain,
-    Message: types.Message,
-  };
-
   const result = {
     domain: {
       name: domainName,
@@ -65,7 +60,7 @@ function getEIP712Message(
       chainId: chainId,
       verifyingContract: forwarderAddress,
     },
-    types: messageTypes,
+    types: types,
     primaryType: "Message",
     message: message,
   };
