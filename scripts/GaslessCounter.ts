@@ -1,6 +1,6 @@
 import { ethers, version } from "hardhat";
 import { BigNumber } from "@ethersproject/bignumber";
-import ethSigUtil, { SignTypedDataVersion } from "@metamask/eth-sig-util";
+import { SignTypedDataVersion, signTypedData, recoverTypedSignature } from "@metamask/eth-sig-util";
 
 interface MessageTypeProperty {
   name: string;
@@ -44,8 +44,8 @@ function getEIP712Message(
   const message = {
     data: data,
     from: from,
-    gas: gas,
-    nonce: nonce,
+    gas: gas.toHexString(),
+    nonce: nonce.toHexString(),
     to: to,
     validUntilTime: String(
       "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
@@ -73,6 +73,8 @@ async function main() {
   const forwarderAddress = process.env.FORWARDER_ADDRESS;
   if (!forwarderAddress) {
     throw new Error("FORWARDER_ADDRESS not set");
+  } else {
+    console.log("forwarderAddress : ", forwarderAddress)
   }
 
   // forwarder attach
@@ -122,6 +124,7 @@ async function main() {
 
   // eip712 message
   const nonce = await forwarder.getNonce(account.address);
+  
 
   const eip712Message = getEIP712Message(
     domainSeparatorName,
@@ -150,20 +153,23 @@ async function main() {
     throw new Error("PRIVATE_KEY not set");
   }
 
-  const sig = ethSigUtil.signTypedData({
-    privateKey: Buffer.from(accountPrivateKey, "hex"),
+  const sig = signTypedData({
+  privateKey: Buffer.from(accountPrivateKey, "hex"),
     data: dataToSign,
     version: SignTypedDataVersion.V4,
   });
   console.log("sig: ", sig);
 
-  const ecRecover = ethSigUtil.recoverTypedSignature({
+  const ecRecover = recoverTypedSignature({
     data: dataToSign,
     signature: sig,
     version: SignTypedDataVersion.V4,
   });
 
   console.log("ecRecover: ", ecRecover);
+  if (ethers.utils.getAddress(ecRecover) != account.address) {
+    throw new Error("Fail sign and recover");
+  }
 
   const tx = {
     forwardRequest: eip712Message,
