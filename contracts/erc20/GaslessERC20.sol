@@ -7,26 +7,26 @@ import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 import "@opengsn/contracts/src/ERC2771Recipient.sol";
 import "../interfaces/IPeggable.sol";
 import "../interfaces/IExtendedERC20.sol";
-import "../interfaces/INativeERC20Registry.sol";
+import "../interfaces/IGaslessERC20Registry.sol";
 
 /**
  * @title gas proxyable ERC20
  * @notice This contract implements ERC20 token that is pegged to ERC20 token and supports gas proxy.
  */
-contract NativeERC20 is IPeggable, ERC20, ERC20Permit, ERC2771Recipient {
-    INativeERC20Registry registry;
+contract GaslessERC20 is IPeggable, ERC20, ERC20Permit, ERC2771Recipient {
+    IGaslessERC20Registry registry;
 
     // original ERC20 token address.
     IExtendedERC20 public erc20;
 
-    constructor(address erc20_, INativeERC20Registry registry_)
+    constructor(address erc20_, IGaslessERC20Registry registry_)
         ERC20(
-            string(abi.encodePacked("Native ", IERC20Metadata(erc20_).name())),
-            string(abi.encodePacked("n", IERC20Metadata(erc20_).symbol()))
+            string(abi.encodePacked("Gasless ", IERC20Metadata(erc20_).name())),
+            string(abi.encodePacked("g", IERC20Metadata(erc20_).symbol()))
         )
-        ERC20Permit("NativeERC20")
+        ERC20Permit("GaslessERC20")
     {
-        require(erc20_ != address(0), "NativeERC20: ZERO_ADDRESS");
+        require(erc20_ != address(0), "GaslessERC20: ZERO_ADDRESS");
         erc20 = IExtendedERC20(erc20_);
         registry = registry_;
         _setTrustedForwarder(registry_.forwarder());
@@ -41,7 +41,7 @@ contract NativeERC20 is IPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     }
 
     /**
-     * Deposit `amount` tokens to this contract and mint pegged native ERC-20 tokens.
+     * Deposit `amount` tokens to this contract and mint pegged gasless ERC-20 tokens.
      * @param amount The amount to deposit.
      */
     function deposit(uint256 amount) external {
@@ -49,7 +49,7 @@ contract NativeERC20 is IPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     }
 
     /**
-     * Claims `amount` tokens to this contract. It burns pegged native ERC-20 tokens
+     * Claims `amount` tokens to this contract. It burns pegged gasless ERC-20 tokens
      * and sends original ERC20 tokens to `to`.
      *
      * @param to The address to withdraw to.
@@ -60,7 +60,7 @@ contract NativeERC20 is IPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     }
 
     /**
-     * Move `amount` tokens from `from` to this contract and mint pegged native ERC-20 tokens.
+     * Move `amount` tokens from `from` to this contract and mint pegged gasless ERC-20 tokens.
      *
      * @param from The address to deposit from.
      * @param amount The amount to deposit.
@@ -71,7 +71,7 @@ contract NativeERC20 is IPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     }
 
     /**
-     * Move `amount` tokens from this contract to `to` and burn pegged native ERC-20 tokens in `from` address.
+     * Move `amount` tokens from this contract to `to` and burn pegged gasless ERC-20 tokens in `from` address.
      *
      * @param from The address to claim from.
      * @param to The address to withdraw to.

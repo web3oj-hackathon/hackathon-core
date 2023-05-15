@@ -7,29 +7,29 @@ import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 import "@opengsn/contracts/src/ERC2771Recipient.sol";
 import "../interfaces/IPeggable.sol";
 import "../interfaces/IExtendedERC20.sol";
-import "../interfaces/INativeERC20Registry.sol";
+import "../interfaces/IGaslessERC20Registry.sol";
 
 /**
- * @title gas proxyable Native Token
- * @notice This contract implements ERC20 token that is pegged to native token and supports gas proxy.
+ * @title gas proxyable Gasless Token
+ * @notice This contract implements ERC20 token that is pegged to Gasless token and supports gas proxy.
  */
-contract NativeETH is IEtherPeggable, ERC20, ERC20Permit, ERC2771Recipient {
-    INativeERC20Registry public registry;
+contract GaslessETH is IEtherPeggable, ERC20, ERC20Permit, ERC2771Recipient {
+    IGaslessERC20Registry public registry;
 
-    constructor(INativeERC20Registry registry_) ERC20("Native Ether", "nETH") ERC20Permit("NativeERC20") {
+    constructor(IGaslessERC20Registry registry_) ERC20("Gasless Ether", "nETH") ERC20Permit("GaslessERC20") {
         registry = registry_;
         _setTrustedForwarder(registry_.forwarder());
     }
 
     /**
-     * Deposit `msg.value` tokens to this contract and mint pegged native ERC-20 tokens.
+     * Deposit `msg.value` tokens to this contract and mint pegged gasless ERC-20 tokens.
      */
     function deposit() external payable {
         _deposit(_msgSender(), msg.value);
     }
 
     /**
-     * Claims `amount` tokens to this contract. It burns pegged native ERC-20 tokens
+     * Claims `amount` tokens to this contract. It burns pegged gasless ERC-20 tokens
      * and sends original ERC20 tokens to `to`.
      *
      * @param to The address to withdraw to.
@@ -40,7 +40,7 @@ contract NativeETH is IEtherPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     }
 
     /**
-     * Withdraw `amount` tokens to this contract and mint pegged native ERC-20 tokens.
+     * Withdraw `amount` tokens to this contract and mint pegged gasless ERC-20 tokens.
      *
      * @param from The address to dep from.
      * @param amount The amount to withdraw.
@@ -50,7 +50,7 @@ contract NativeETH is IEtherPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     }
 
     /**
-     * Move `amount` tokens from this contract to `to` and burn pegged native ERC-20 tokens in `from` address.
+     * Move `amount` tokens from this contract to `to` and burn pegged gasless ERC-20 tokens in `from` address.
      *
      * @param from The address to claim from.
      * @param to The address to withdraw to.
@@ -59,7 +59,7 @@ contract NativeETH is IEtherPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     function _withdraw(address from, address payable to, uint256 amount) internal {
         _burn(from, amount);
         (bool success,) = to.call{value: amount}("");
-        require(success, "NativeETH: ETH_TRANSFER_FAILED");
+        require(success, "GaslessETH: ETH_TRANSFER_FAILED");
     }
 
     function _msgSender() internal view override(Context, ERC2771Recipient) returns (address ret) {
