@@ -1,7 +1,7 @@
 {
   "name": "hardhat-project",
   "scripts": {
-    "deploy": "hardhat run --network hackathon scripts/deploy.ts"
+    "deploy": "hardhat run --network hackathon scripts/deploy-registry.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
