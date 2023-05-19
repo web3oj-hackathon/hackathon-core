@@ -1,4 +1,4 @@
-import { HardhatUserConfig, task } from "hardhat/config";
+import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "./tasks/deploy-erc20";
 
@@ -10,7 +10,8 @@ const config: HardhatUserConfig = {
     hardhat: {},
     hackathon: {
       url: process.env.HACKATHON_RPC_URL,
-      accounts: [process.env.PRIVATE_KEY as string],
+      gasPrice: 700000000000,
+      accounts: [process.env.PRIVATE_KEY || ""],
     },
   },
 };
