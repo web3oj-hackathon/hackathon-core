@@ -1,15 +1,27 @@
-require("dotenv").config();
-
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "./tasks/deploy-erc20";
+import "./tasks/register";
+
+require("dotenv").config();
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.17",
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.17",
+      },
+      {
+        version: "0.7.6",
+      },
+    ],
+  },
   networks: {
+    hardhat: {},
     hackathon: {
-      url: process.env.RPC_URL || "",
-      accounts: [process.env.PRIVATE_KEY || ""],
+      url: process.env.HACKATHON_RPC_URL,
       gasPrice: 700000000000,
+      accounts: [process.env.PRIVATE_KEY || ""],
     },
   },
 };
