@@ -5,7 +5,11 @@
     "hardhat": "^2.14.0"
   },
   "dependencies": {
+    "@metamask/eth-sig-util": "^5.1.0",
+    "@opengsn/cli": "^3.0.0-beta.6",
     "@opengsn/contracts": "^3.0.0-beta.6",
-    "@openzeppelin/contracts": "^4.8.3"
+    "@opengsn/provider": "^3.0.0-beta.6",
+    "@openzeppelin/contracts": "^4.8.3",
+    "dotenv": "^16.0.3"
   }
 }
