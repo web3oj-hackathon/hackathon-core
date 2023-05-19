@@ -15,14 +15,15 @@ task("deploy-erc20", "Deploy ERC20 contract")
 
 task("mint", "Mint ERC20 tokens")
   .addParam("contract")
+  .addOptionalParam("target")
   .addParam("amount")
   .setAction(async (args, hre) => {
-    const { contract, amount } = args;
+    const { contract, target, amount } = args;
 
     const DevERC20 = await hre.ethers.getContractFactory("DevERC20");
     const devERC20 = await DevERC20.attach(contract);
 
-    const account = await hre.ethers.provider.getSigner().getAddress();
+    const account = target ?? (await hre.ethers.provider.getSigner().getAddress());
 
     const tx = await devERC20.mint(account, hre.ethers.utils.parseEther(amount));
     await tx.wait();
