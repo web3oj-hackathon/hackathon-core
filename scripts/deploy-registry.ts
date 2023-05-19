@@ -16,7 +16,7 @@ async function main() {
   console.log("GaslessERC20Registry deployed to:", gaslessRegistry.address);
 
   // deploy gasless ether contract.
-  const GaslessAVAX = await ethers.getContractFactory("gaslessAVAX");
+  const GaslessAVAX = await ethers.getContractFactory("GaslessAVAX");
   const gaslessAVAX = await GaslessAVAX.deploy(gaslessRegistry.address);
   await gaslessAVAX.deployed();
 
