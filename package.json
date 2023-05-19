@@ -1,12 +1,14 @@
 {
   "name": "hardhat-project",
   "scripts": {
-    "deploy": "hardhat run --network hackathon scripts/deploy-registry.ts"
+    "deploy": "hardhat run --network hackathon scripts/deploy-registry.ts",
+    "deploy:wavax": "hardhat run --network hackathon scripts/deploy-wavax.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "dotenv": "^16.0.3",
-    "hardhat": "^2.14.0"
+    "hardhat": "^2.14.0",
+    "WETH10": "github:WETH10/WETH10"
   },
   "dependencies": {
     "@metamask/eth-sig-util": "^5.1.0",
