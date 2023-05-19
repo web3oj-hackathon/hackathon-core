@@ -1,18 +1,30 @@
 import { ethers } from "hardhat";
 
+require("dotenv").config();
+
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+  // get forwarder contract.
+  // forwarder contract should be already deployed to the hackathon network.
+  const Forwarder = await ethers.getContractFactory("Forwarder");
+  const forwarder = await Forwarder.attach(process.env.HACKATHON_FORWARDER_ADDRESS as string);
 
-  const lockedAmount = ethers.utils.parseEther("1");
+  // deploy gasless registry contract.
+  const GaslessRegistry = await ethers.getContractFactory("GaslessERC20Registry");
+  const gaslessRegistry = await GaslessRegistry.deploy(forwarder.address);
+  await gaslessRegistry.deployed();
 
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  console.log("GaslessERC20Registry deployed to:", gaslessRegistry.address);
 
-  await lock.deployed();
+  // deploy gasless ether contract.
+  const GaslessETH = await ethers.getContractFactory("GaslessETH");
+  const gaslessETH = await GaslessETH.deploy(gaslessRegistry.address);
+  await gaslessETH.deployed();
 
-  console.log(`Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`);
+  console.log("GaslessETH deployed to:", gaslessETH.address);
+
+  // proxy gasless ether contract.
+  await gaslessRegistry.proxyGaslessETH(gaslessETH.address);
+  console.log("GaslessETH proxied to:", gaslessETH.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
