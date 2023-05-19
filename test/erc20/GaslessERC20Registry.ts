@@ -30,18 +30,18 @@ describe("GaslessERC20Registry", () => {
     const gaslessRegistry = await GaslessRegistry.connect(gaslessRegistryOwner).deploy(forwarder.address);
     await gaslessRegistry.deployed();
 
-    const GaslessETH = await ethers.getContractFactory("GaslessETH");
-    const gaslessETH = await GaslessETH.connect(gaslessRegistryOwner).deploy(gaslessRegistry.address);
-    await gaslessETH.deployed();
+    const GaslessAVAX = await ethers.getContractFactory("GaslessAVAX");
+    const gaslessAVAX = await GaslessAVAX.connect(gaslessRegistryOwner).deploy(gaslessRegistry.address);
+    await gaslessAVAX.deployed();
 
-    return { gaslessRegistry, forwarder, gaslessETH };
+    return { gaslessRegistry, forwarder, gaslessAVAX };
   }
 
   async function deployGaslessRegistryWithERC20Fixture() {
-    const { gaslessRegistry, forwarder, gaslessETH } = await deployGaslessRegistryFixture();
+    const { gaslessRegistry, forwarder, gaslessAVAX } = await deployGaslessRegistryFixture();
     const { testERC20 } = await deployTestERC20Fixture();
 
-    await gaslessRegistry.proxyGaslessETH(gaslessETH.address);
+    await gaslessRegistry.proxyGaslessAVAX(gaslessAVAX.address);
     await gaslessRegistry.createGaslessERC20(testERC20.address);
 
     // get gasless ERC20 contract
@@ -50,14 +50,14 @@ describe("GaslessERC20Registry", () => {
       await gaslessRegistry.gaslessTokens(testERC20.address)
     );
 
-    return { gaslessRegistry, forwarder, testERC20, gaslessETH, gaslessERC20 };
+    return { gaslessRegistry, forwarder, testERC20, gaslessAVAX, gaslessERC20 };
   }
 
   it("should proxy gasless registry", async () => {
-    const { gaslessRegistry, gaslessETH } = await loadFixture(deployGaslessRegistryFixture);
+    const { gaslessRegistry, gaslessAVAX } = await loadFixture(deployGaslessRegistryFixture);
 
     // cannt proxy gasless ether contract again.
-    expect(gaslessRegistry.proxyGaslessETH(gaslessETH.address)).to.be.reverted;
+    expect(gaslessRegistry.proxyGaslessAVAX(gaslessAVAX.address)).to.be.reverted;
   });
 
   it("should register ERC20", async () => {

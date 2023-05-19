@@ -13,10 +13,10 @@ import "../interfaces/IGaslessERC20Registry.sol";
  * @title gas proxyable Gasless Token
  * @notice This contract implements ERC20 token that is pegged to Gasless token and supports gas proxy.
  */
-contract GaslessETH is IEtherPeggable, ERC20, ERC20Permit, ERC2771Recipient {
+contract GaslessAVAX is IEtherPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     IGaslessERC20Registry public registry;
 
-    constructor(address registry_) ERC20("Gasless Ether", "nETH") ERC20Permit("GaslessERC20") {
+    constructor(address registry_) ERC20("Gasless AVAX", "gAVAX") ERC20Permit("Gasless AVAX") {
         registry = IGaslessERC20Registry(registry_);
         _setTrustedForwarder(registry.forwarder());
     }
@@ -59,7 +59,7 @@ contract GaslessETH is IEtherPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     function _withdraw(address from, address payable to, uint256 amount) internal {
         _burn(from, amount);
         (bool success,) = to.call{value: amount}("");
-        require(success, "GaslessETH: ETH_TRANSFER_FAILED");
+        require(success, "GaslessAVAX: AVAX_TRANSFER_FAILED");
     }
 
     function _msgSender() internal view override(Context, ERC2771Recipient) returns (address ret) {

@@ -16,15 +16,15 @@ async function main() {
   console.log("GaslessERC20Registry deployed to:", gaslessRegistry.address);
 
   // deploy gasless ether contract.
-  const GaslessETH = await ethers.getContractFactory("GaslessETH");
-  const gaslessETH = await GaslessETH.deploy(gaslessRegistry.address);
-  await gaslessETH.deployed();
+  const GaslessAVAX = await ethers.getContractFactory("gaslessAVAX");
+  const gaslessAVAX = await GaslessAVAX.deploy(gaslessRegistry.address);
+  await gaslessAVAX.deployed();
 
-  console.log("GaslessETH deployed to:", gaslessETH.address);
+  console.log("gaslessAVAX deployed to:", gaslessAVAX.address);
 
   // proxy gasless ether contract.
-  await gaslessRegistry.proxyGaslessETH(gaslessETH.address);
-  console.log("GaslessETH proxied to:", gaslessETH.address);
+  await gaslessRegistry.proxyGaslessAVAX(gaslessAVAX.address);
+  console.log("gaslessAVAX proxied to:", gaslessAVAX.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

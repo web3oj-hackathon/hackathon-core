@@ -2,17 +2,17 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./GaslessETH.sol";
+import "./GaslessAVAX.sol";
 import "./GaslessERC20.sol";
 import "../interfaces/IGaslessERC20Registry.sol";
 
 /**
  * @title Gasless ERC20 Registry
- * @notice This contract deploys GaslessEther and GaslessERC20 contracts and
+ * @notice This contract deploys GaslessAVAX and GaslessERC20 contracts and
  * keeps track of deployed GaslessERC20 contracts.
  */
 contract GaslessERC20Registry is IGaslessERC20Registry, Ownable {
-    GaslessETH public gaslessETH;
+    GaslessAVAX public gaslessAVAX;
     mapping(address => GaslessERC20) public gaslessTokens;
     address public forwarder;
 
@@ -21,17 +21,17 @@ contract GaslessERC20Registry is IGaslessERC20Registry, Ownable {
     }
 
     /**
-     * Proxies GaslessETH contract.
+     * Proxies GaslessAVAX contract.
      *
-     * @param gaslessEther GaslessETH contract address.
+     * @param gaslessAvax GaslessAVAX contract address.
      */
-    function proxyGaslessETH(GaslessETH gaslessEther) external {
-        require(address(gaslessETH) == address(0), "GaslessERC20Registry: ALREADY_PROXIED");
-        require(gaslessEther.registry() == IGaslessERC20Registry(this), "GaslessERC20Registry: INVALID_REGISTRY");
+    function proxyGaslessAVAX(GaslessAVAX gaslessAvax) external {
+        require(address(gaslessAVAX) == address(0), "GaslessERC20Registry: ALREADY_PROXIED");
+        require(gaslessAvax.registry() == IGaslessERC20Registry(this), "GaslessERC20Registry: INVALID_REGISTRY");
 
         // to prevent too long code length,
-        // deploy GaslessETH contract separately.
-        gaslessETH = gaslessEther;
+        // deploy gaslessAVAX contract separately.
+        gaslessAVAX = gaslessAvax;
     }
 
     /**
