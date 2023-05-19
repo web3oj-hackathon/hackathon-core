@@ -16,9 +16,9 @@ import "../interfaces/IGaslessERC20Registry.sol";
 contract GaslessETH is IEtherPeggable, ERC20, ERC20Permit, ERC2771Recipient {
     IGaslessERC20Registry public registry;
 
-    constructor(IGaslessERC20Registry registry_) ERC20("Gasless Ether", "nETH") ERC20Permit("GaslessERC20") {
-        registry = registry_;
-        _setTrustedForwarder(registry_.forwarder());
+    constructor(address registry_) ERC20("Gasless Ether", "nETH") ERC20Permit("GaslessERC20") {
+        registry = IGaslessERC20Registry(registry_);
+        _setTrustedForwarder(registry.forwarder());
     }
 
     /**

@@ -16,10 +16,22 @@ contract GaslessERC20Registry is IGaslessERC20Registry, Ownable {
     mapping(address => GaslessERC20) public gaslessTokens;
     address public forwarder;
 
-    constructor(address forwarder_) Ownable() {
-        // deploy Gasless Ether contract.
-        gaslessETH = new GaslessETH(IGaslessERC20Registry(this));
+    constructor(address forwarder_) {
         forwarder = forwarder_;
+    }
+
+    /**
+     * Proxies GaslessETH contract.
+     *
+     * @param gaslessEther GaslessETH contract address.
+     */
+    function proxyGaslessETH(GaslessETH gaslessEther) external {
+        require(address(gaslessETH) == address(0), "GaslessERC20Registry: ALREADY_PROXIED");
+        require(gaslessEther.registry() == IGaslessERC20Registry(this), "GaslessERC20Registry: INVALID_REGISTRY");
+
+        // to prevent too long code length,
+        // deploy GaslessETH contract separately.
+        gaslessETH = gaslessEther;
     }
 
     /**
