@@ -27,13 +27,14 @@ contract GaslessERC20Registry is IGaslessERC20Registry, Ownable {
      *
      * @param erc20_ original ERC20 token address.
      */
-    function createGaslessERC20(address erc20_) external onlyOwner returns (address) {
+    function createGaslessERC20(address erc20_) external returns (address) {
         require(erc20_ != address(0), "GaslessERC20Registry: ZERO_ADDRESS");
-        require(gaslessTokens[erc20_] == GaslessERC20(address(0)), "GaslessERC20Registry: ALREADY_CREATED");
         return _createGaslessERC20(erc20_);
     }
 
     function _createGaslessERC20(address erc20_) internal returns (address) {
+        require(gaslessTokens[erc20_] == GaslessERC20(address(0)), "GaslessERC20Registry: ALREADY_CREATED");
+
         // use CREATE2 to deploy GaslessERC20 contract.
         // to use CREATE2, we expect GaslessERC20 contract address even before deployment.
         GaslessERC20 gaslessToken = new GaslessERC20{salt: bytes32(uint256(0))}(erc20_, IGaslessERC20Registry(this));
