@@ -2,7 +2,8 @@
   "name": "hardhat-project",
   "scripts": {
     "deploy": "hardhat run --network hackathon scripts/deploy-registry.ts",
-    "deploy:wavax": "hardhat run --network hackathon scripts/deploy-wavax.ts"
+    "deploy:wavax": "hardhat run --network hackathon scripts/deploy-wavax.ts",
+    "register:gasless": "hardhat run --network hackathon scripts/register-gasless.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
