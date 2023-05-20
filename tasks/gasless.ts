@@ -1,10 +1,10 @@
-import { subtask, task } from "hardhat/config";
 import * as ethSigUtil from "@metamask/eth-sig-util";
 import axios from "axios";
+import { task } from "hardhat/config";
 
-const DOMAIN_NAME = "my domain name";
-const DOMAIN_VERSION = "my domain version";
-const REQUEST_TYPE = "GaslessERC20TxRequest";
+const DOMAIN_NAME = "AAAA Platform";
+const DOMAIN_VERSION = "1";
+const REQUEST_TYPE = "Message";
 const REQUEST_TYPE_SUFFIX = "bytes32 ABCDEFGHIJKLMNOPQRSTGSN)";
 
 const types = {
@@ -14,7 +14,7 @@ const types = {
     { name: "chainId", type: "uint256" },
     { name: "verifyingContract", type: "address" },
   ],
-  Message: [
+  [REQUEST_TYPE]: [
     { name: "from", type: "address" },
     { name: "to", type: "address" },
     { name: "value", type: "uint256" },
@@ -70,7 +70,7 @@ task("gasless:send", "Deploy ERC20 contract")
     };
 
     const message = {
-      data: desiredTx.data?.slice(2),
+      data: desiredTx.data,
       from: await account.getAddress(),
       gas: estimatedGas,
       nonce: hexNonce,
@@ -82,7 +82,7 @@ task("gasless:send", "Deploy ERC20 contract")
     const dataToSign = {
       domain,
       types,
-      primaryType: "Message" as "Message",
+      primaryType: REQUEST_TYPE as any,
       message: {
         ...message,
         ABCDEFGHIJKLMNOPQRSTGSN: Buffer.from(REQUEST_TYPE_SUFFIX, "utf8"),
@@ -109,9 +109,11 @@ task("gasless:send", "Deploy ERC20 contract")
     const forwardRequest = {
       domain,
       types,
-      primaryType: "Message" as "Message",
+      primaryType: REQUEST_TYPE,
       message,
     };
+
+    // forwardRequest.types[REQUEST_TYPE] = forwardRequest.types[REQUEST_TYPE].slice(0, -1);
 
     // convert to relay tx.
     const relayTx = {
@@ -142,6 +144,15 @@ task("gasless:send", "Deploy ERC20 contract")
           "Content-Type": "application/json",
         },
       });
+
+      const txHash = result.data.result;
+
+      console.log(`txHash : ${txHash}`);
+
+      // wait for tx mined
+      const receipt = await hre.ethers.provider.waitForTransaction(txHash);
+
+      console.log(`tx mined : ${JSON.stringify(receipt, null, 2)}`);
     } catch (e: any) {
       console.error(e.response.data);
     }
