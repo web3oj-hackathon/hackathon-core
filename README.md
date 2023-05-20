@@ -4,8 +4,9 @@
 
 ### Gasless ERC20
 
-Gasless ERC20 is pegged ERC20 with original ERC20(or native token AVAX). Since it supports gasless transaction, users can send or approve their 
-gasless tokens without gas fee. Also, they can swap gasless tokens to original tokens anytime without gas fee.
+[Gasless ERC20](https://github.com/web3oj-hackathon/hackathon-core/blob/main/contracts/erc20/GaslessERC20.sol) is pegged ERC20 with original 
+ERC20(or native token AVAX). Since it supports gasless transaction, users can send or approve their gasless tokens without gas fee. Also, they
+can swap gasless tokens to original tokens anytime without gas fee.
 
 ### GaslessSwap
 
@@ -86,8 +87,9 @@ npx hardhat mint --contract <ERC20_CONTRACT> --target <ADDRESS_TO_GET_TOKENS> --
 
 ### 4. Register ERC20 tokens to registry
 
-You should make gasless token contract by registering original ERC20 tokens to `GaslessERC20Registry` contract. Please notice
-that you should add `--network hackathon` option to use hackathon network.
+You should make gasless token contract by registering original ERC20 tokens to 
+[`GaslessERC20Registry`](https://github.com/web3oj-hackathon/hackathon-core/blob/main/contracts/erc20/GaslessERC20Registry.sol) 
+contract. Please notice that you should add `--network hackathon` option to use hackathon network.
 
 ```
 npx hardhat registry --contract <ERC20_CONTRACT>
