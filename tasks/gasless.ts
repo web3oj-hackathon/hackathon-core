@@ -16,7 +16,7 @@ const types = {
     { name: "chainId", type: "uint256" },
     { name: "verifyingContract", type: "address" },
   ],
-  Message: [
+  [REQUEST_TYPE]: [
     { name: "from", type: "address" },
     { name: "to", type: "address" },
     { name: "value", type: "uint256" },
@@ -62,7 +62,7 @@ task("gasless:send", "Deploy ERC20 contract")
 
     // get desired transaction data
     const desiredTx = await gaslessERC20.populateTransaction.transfer(to, hre.ethers.utils.parseEther(amount));
-    const estimatedGas = hre.ethers.utils.hexlify(700000);
+    const estimatedGas = hre.ethers.utils.hexlify(30000);
 
     const domain = {
       name: DOMAIN_NAME,
@@ -72,7 +72,7 @@ task("gasless:send", "Deploy ERC20 contract")
     };
 
     const message = {
-      data: desiredTx.data?.slice(2),
+      data: desiredTx.data,
       from: await account.getAddress(),
       gas: estimatedGas,
       nonce: hexNonce,
@@ -111,9 +111,11 @@ task("gasless:send", "Deploy ERC20 contract")
     const forwardRequest = {
       domain,
       types,
-      primaryType: "Message" as "Message",
+      primaryType: REQUEST_TYPE,
       message,
     };
+
+    // forwardRequest.types[REQUEST_TYPE] = forwardRequest.types[REQUEST_TYPE].slice(0, -1);
 
     // convert to relay tx.
     const relayTx = {
@@ -144,6 +146,8 @@ task("gasless:send", "Deploy ERC20 contract")
           "Content-Type": "application/json",
         },
       });
+
+      console.log(result);
     } catch (e: any) {
       console.error(e.response.data);
     }
