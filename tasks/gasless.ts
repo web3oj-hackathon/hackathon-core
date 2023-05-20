@@ -1,8 +1,6 @@
-import { subtask, task } from "hardhat/config";
 import * as ethSigUtil from "@metamask/eth-sig-util";
 import axios from "axios";
-import * as ethUtil from "ethereumjs-util";
-import { toBN } from "@opengsn/provider";
+import { task } from "hardhat/config";
 
 const DOMAIN_NAME = "AAAA Platform";
 const DOMAIN_VERSION = "1";
