@@ -5,6 +5,11 @@ import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import "@opengsn/contracts/src/ERC2771Recipient.sol";
 import "../interfaces/IPeggable.sol";
 
+/**
+ * @title GaslessSwap
+ * @notice This contract make users swap gasless ERC20 tokens
+ * to another gasless ERC20 tokens from Uniswap with no gas fee.
+ */
 contract GaslessSwap is ERC2771Recipient {
     ISwapRouter public immutable swapRouter;
     IGaslessERC20Registry public immutable registry;
@@ -16,6 +21,14 @@ contract GaslessSwap is ERC2771Recipient {
         registry = registry_;
     }
 
+    /**
+     * Swap gasless ERC20 tokens to another gasless ERC20 tokens from Uniswap
+     * with no gas fee.
+     *
+     * @param from gasless in ERC20 token address
+     * @param to gasless out ERC20 token address
+     * @param amount The amount to swap (from amount)
+     */
     function swap(IPeggable from, IPeggable to, uint256 amount) external {
         // get original ERC20 token address
         IERC20 fromToken = registry.originalTokenOf(address(from));
