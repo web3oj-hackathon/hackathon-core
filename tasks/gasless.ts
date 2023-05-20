@@ -62,7 +62,7 @@ task("gasless:send", "Deploy ERC20 contract")
 
     // get desired transaction data
     const desiredTx = await gaslessERC20.populateTransaction.transfer(to, hre.ethers.utils.parseEther(amount));
-    const estimatedGas = hre.ethers.utils.hexlify(30000);
+    const estimatedGas = hre.ethers.utils.hexlify(700000);
 
     const domain = {
       name: DOMAIN_NAME,
@@ -147,7 +147,14 @@ task("gasless:send", "Deploy ERC20 contract")
         },
       });
 
-      console.log(result);
+      const txHash = result.data.result;
+
+      console.log(`txHash : ${txHash}`);
+
+      // wait for tx mined
+      const receipt = await hre.ethers.provider.waitForTransaction(txHash);
+
+      console.log(`tx mined : ${JSON.stringify(receipt, null, 2)}`);
     } catch (e: any) {
       console.error(e.response.data);
     }
