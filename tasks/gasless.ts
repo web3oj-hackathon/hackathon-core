@@ -1,6 +1,8 @@
 import { subtask, task } from "hardhat/config";
 import * as ethSigUtil from "@metamask/eth-sig-util";
 import axios from "axios";
+import * as ethUtil from "ethereumjs-util";
+import { toBN } from "@opengsn/provider";
 
 const DOMAIN_NAME = "my domain name";
 const DOMAIN_VERSION = "my domain version";
@@ -65,7 +67,7 @@ task("gasless:send", "Deploy ERC20 contract")
     const domain = {
       name: DOMAIN_NAME,
       version: DOMAIN_VERSION,
-      chainId: network.chainId,
+      chainId: ethUtil.bnToHex(toBN(network.chainId)),
       verifyingContract: process.env.HACKATHON_FORWARDER_ADDRESS,
     };
 
