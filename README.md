@@ -31,6 +31,8 @@ Like uniswap, you can use gasless ERC20 tokens with any other DeFi projects such
 
 ## Install
 
+You should install all dependencies first. Please don't use yarn instead of npm because of hardhat compatibility problem.
+
 ```
 npm install
 ```
