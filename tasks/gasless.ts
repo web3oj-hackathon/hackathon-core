@@ -67,7 +67,7 @@ task("gasless:send", "Deploy ERC20 contract")
     const domain = {
       name: DOMAIN_NAME,
       version: DOMAIN_VERSION,
-      chainId: ethUtil.bnToHex(toBN(network.chainId)),
+      chainId: network.chainId,
       verifyingContract: process.env.HACKATHON_FORWARDER_ADDRESS,
     };
 
@@ -84,7 +84,7 @@ task("gasless:send", "Deploy ERC20 contract")
     const dataToSign = {
       domain,
       types,
-      primaryType: REQUEST_TYPE,
+      primaryType: REQUEST_TYPE as any,
       message: {
         ...message,
         ABCDEFGHIJKLMNOPQRSTGSN: Buffer.from(REQUEST_TYPE_SUFFIX, "utf8"),
