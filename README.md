@@ -25,6 +25,10 @@ For example, assume that an user swap his/her 2000gMATIC to 3000 gUSDT.
 6. GaslessSwap deposit 3000USDT to gasless USDT contract. It will mint 3000gUSDT to GaslessSwap contract.
 7. GaslessSwap sends 3000gUSDT to user.
 
+### Serving Other Existing DeFi Projects
+
+Like uniswap, you can use gasless ERC20 tokens with any other DeFi projects such as SushiSwap, Curve, and Aave by deploying similar contract.
+
 ## Install
 
 ```
