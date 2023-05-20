@@ -4,9 +4,9 @@ import axios from "axios";
 import * as ethUtil from "ethereumjs-util";
 import { toBN } from "@opengsn/provider";
 
-const DOMAIN_NAME = "my domain name";
-const DOMAIN_VERSION = "my domain version";
-const REQUEST_TYPE = "GaslessERC20TxRequest";
+const DOMAIN_NAME = "AAAA Platform";
+const DOMAIN_VERSION = "1";
+const REQUEST_TYPE = "Message";
 const REQUEST_TYPE_SUFFIX = "bytes32 ABCDEFGHIJKLMNOPQRSTGSN)";
 
 const types = {
@@ -84,7 +84,7 @@ task("gasless:send", "Deploy ERC20 contract")
     const dataToSign = {
       domain,
       types,
-      primaryType: "Message" as "Message",
+      primaryType: REQUEST_TYPE,
       message: {
         ...message,
         ABCDEFGHIJKLMNOPQRSTGSN: Buffer.from(REQUEST_TYPE_SUFFIX, "utf8"),
