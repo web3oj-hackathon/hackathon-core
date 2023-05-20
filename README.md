@@ -33,6 +33,8 @@ npm install
 
 ## Deploy
 
+### 1. Configuration
+
 You should set environments for deploying contracts. You can make `.env` file to set environments and should fill followings.
 
 ```
@@ -41,14 +43,48 @@ HACKATHON_RPC_URL=
 HACKATHON_FORWARDER_ADDRESS=
 PRIVATE_KEY=
 HACKATHON_RELAYER_URL=
-HACKATHON_REGISTRY_ADDRESS=
 ```
+
+### 2. Deploying Gasless ERC20 Registry Contract
 
 You can deploy registry contract by npm script. GaslessERC20Registry is a registry contract that creates 
 ERC20-pegged gasless ERC20 contracts.
 
 ```
 npm run deploy
+```
+
+After you deploy registry contract, you should set `HACKATHON_REGISTRY_ADDRESS` environment variable to its address.
+
+```
+# set registry contract address in .env file
+HACKATHON_REGISTRY_ADDRESS=...
+```
+
+### 3. Deploying ERC20 Contract for testing
+
+> ❗ Notice that you should set `--network hackathon` to use other network instead of local chain.
+
+Since it has no ERC20 tokens in local or dev chain, you should deploy ERC20 contract and mint its tokens to your account 
+for testing. We provide command for deploying ERC20 contract for testing. This ERC20 contract supports `mint` to public.
+
+```
+npx hardhat deploy-erc20 --name Polygon --symbol MATIC
+```
+
+You can mint tokens by
+
+```
+npx hardhat mint --contract <ERC20_CONTRACT> --target <ADDRESS_TO_GET_TOKENS> --amount <AMOUNT(ether)>
+```
+
+### 4. Register ERC20 tokens to registry
+
+You should make gasless token contract by registering original ERC20 tokens to `GaslessERC20Registry` contract. Please notice
+that you should add `--network hackathon` option to use hackathon network.
+
+```
+npx hardhat registry --contract <ERC20_CONTRACT>
 ```
 
 ## Commands
