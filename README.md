@@ -1,13 +1,7 @@
-# Sample Hardhat Project
+# Hackathon-Core
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+## gasless-send
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+```
+npx hardhat gasless:send --network hackathon --contract 0x6072A15e370aA985A603C8508A1e23FAB8Ba63e7 --to 0x6072A15e370aA985A603C8508A1e23FAB8Ba63e7 --amount 1
 ```

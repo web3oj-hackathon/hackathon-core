@@ -2,6 +2,7 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "./tasks/deploy-erc20";
 import "./tasks/register";
+import "./tasks/gasless";
 
 require("dotenv").config();
 

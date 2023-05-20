@@ -5,7 +5,7 @@ require("dotenv").config();
 const DOMAIN_NAME = "GaslessERC20";
 const DOMAIN_VERSION = "1";
 const REQUEST_TYPE = "GaslessERC20TxRequest";
-const REQUEST_TYPE_SUFFIX = "bytes8 typeSuffixDatadatadatada)";
+const REQUEST_TYPE_SUFFIX = "bytes32 typeSuffixDatadatadatada)";
 
 async function main() {
   const Forwarder = await ethers.getContractFactory("Forwarder");
