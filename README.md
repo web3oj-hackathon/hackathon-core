@@ -89,8 +89,18 @@ npx hardhat registry --contract <ERC20_CONTRACT>
 
 ## Commands
 
-### gasless-send
+### mint
+
+You can mint any ERC20 tokens created by `npx hardhat deploy-erc20` command by following command.
 
 ```
-npx hardhat gasless:send --network hackathon --contract 0x6072A15e370aA985A603C8508A1e23FAB8Ba63e7 --to 0x6072A15e370aA985A603C8508A1e23FAB8Ba63e7 --amount 1
+npx hardhat mint --contract <ERC20_CONTRACT> --target <ADDRESS_TO_GET_TOKENS> --amount <AMOUNT(ether)>
+```
+
+### gasless-send
+
+You can send gasless tokens without gas fee by following command.
+
+```
+npx hardhat gasless:send --network hackathon --contract <GASLESS_ERC20_CONTRACT> --to <ACCOUNT_TO_SEND> --amount <AMOUNT(ether)>
 ```
