@@ -16,7 +16,7 @@ user can swap between two tokens without gas fee.
 
 For example, assume that an user swap his/her 2000gMATIC to 3000 gUSDT.
 
-<img width="1581" alt="image" src="https://github.com/web3oj-hackathon/hackathon-core/assets/26502092/37cb674a-4a09-4490-9558-d2e13e19d70c">
+<img width="1576" alt="image" src="https://github.com/web3oj-hackathon/hackathon-core/assets/26502092/b81e84df-39d6-47c5-8b6c-e3ed32a019a9">
 
 1. User approves their gasless ERC20 tokens for swap to GaslessSwap contract. Since it uses gasless tokens, user can approve without gas fee.
 2. User requests GaslessSwap contract to swap 2000 gMATICs to gUSDTs.
